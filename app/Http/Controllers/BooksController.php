@@ -22,6 +22,7 @@ class BooksController extends Controller
      */
     public function show(Book $book)
     {
+        $book->load('comments', 'comments.user');
         return view('books.show', compact('book'));
     }
 }

@@ -775,6 +775,7 @@
             }
         }
     </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased">
 <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
@@ -827,14 +828,37 @@
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <div class="mt-20">
                 <div class="grid grid-cols-1 md:grid-cols-1 gap-6 lg:gap-8">
-                    <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex transition-all duration-250">
 
-                        <div>
-                            <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Комментарии</h2>
-                        </div>
-
+                    <div>
+                        <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Комментарии</h2>
                     </div>
 
+                    <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex transition-all duration-250">
+                        <div>
+                            @foreach($book->comments as $comment)
+                                <div class="mb-6">
+                                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $comment->user->name }}</label>
+                                    <div id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        {{ $comment->content  }}
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+
+                    <h4>Добавить комментарий</h4>
+
+                    <form action="{{ route('comment.store', $book) }}" method="post">
+                        @csrf
+                        <div class="mb-6">
+                            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Текст</label>
+                            <textarea id="message" name="content" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        </textarea>
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Создать</button>
+
+                    </form>
 
                 </div>
             </div>

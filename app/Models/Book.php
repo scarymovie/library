@@ -29,6 +29,11 @@ class Book extends Model
         return $this->belongsTo(Author::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

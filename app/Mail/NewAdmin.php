@@ -19,7 +19,7 @@ class NewAdmin extends Mailable
      */
     public function __construct(public User $user)
     {
-        return $this->view('admin.emails.index');
+        //
     }
 
     /**
@@ -38,7 +38,7 @@ class NewAdmin extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'admin.emails.index',
         );
     }
 

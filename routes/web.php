@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BooksController as AdminBooksController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\BooksController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,7 @@ Route::redirect('/', '/books');
 //Route::resource('books', BooksController::class);
 Route::get('/books', [BooksController::class, 'index'])->name('library');
 Route::get('/book/{book}', [BooksController::class, 'show'])->name('library.show');
+Route::post('/comment/{book}', [CommentsController::class, 'store'])->name('comment.store');
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function (){
     Route::resource('books', AdminBooksController::class);
     Route::resource('categories', CategoriesController::class);

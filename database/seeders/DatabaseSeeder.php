@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
                 CategoriesSeeder::class,
                 AuthorsSeeder::class,
                 BooksSeeder::class,
-                AdminSeeder::class
+                AdminSeeder::class,
+                CommentsSeeder::class,
             ]
         );
     }
