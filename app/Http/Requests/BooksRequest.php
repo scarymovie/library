@@ -25,7 +25,7 @@ class BooksRequest extends FormRequest
             'title' => 'required|string',
             'slug' => 'string|nullable',
             'category_id' => 'required|exists:categories,id|string',
-            'author' => 'required|string',
+            'author_id' => 'required|string|exists:authors,id',
             'description' => 'required|string',
             'rating' => 'required|string',
             'cover' => '',

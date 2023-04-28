@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BooksRequest;
 use App\Http\Services\BookService;
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class BooksController extends Controller
      */
     public function index()
     {
-        $books = Book::with('category')->get();
+        $books = Book::with('category', 'author')->get();
         return view('admin.books.index', compact('books'));
     }
 
@@ -26,7 +27,8 @@ class BooksController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.books.create', compact('categories'));
+        $authors = Author::all();
+        return view('admin.books.create', compact('categories', 'authors'));
     }
 
     /**
@@ -40,7 +42,7 @@ class BooksController extends Controller
             'title' => $validated['title'],
             'category_id' => $validated['category_id'],
             'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
-            'author' => $validated['author'],
+            'author_id' => $validated['author_id'],
             'description' => $validated['description'],
             'rating' => $validated['rating'],
             'cover' => $cover ?? '',
@@ -54,7 +56,8 @@ class BooksController extends Controller
     public function edit(Book $book)
     {
         $categories = Category::all();
-        return view('admin.books.edit', compact('book', 'categories'));
+        $authors = Author::all();
+        return view('admin.books.edit', compact('book', 'categories', 'authors'));
     }
 
     /**
@@ -68,7 +71,7 @@ class BooksController extends Controller
             'title' => $validated['title'],
             'category_id' => $validated['category_id'],
             'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
-            'author' => $validated['author'],
+            'author_id' => $validated['author_id'],
             'description' => $validated['description'],
             'rating' => $validated['rating'],
             'cover' => $cover ?? $book->cover,
