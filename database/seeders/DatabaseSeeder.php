@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(
             [
                 CategoriesSeeder::class,
+                AuthorsSeeder::class,
                 BooksSeeder::class,
             ]
         );

@@ -18,11 +18,11 @@ class BooksSeeder extends Seeder
             $title = \Str::random(5);
             $category_id = rand(1,5);
             $slug = \Str::slug($title);
-            $author = \Str::random(5);
+            $author = rand(1, 50);
             $description = \Str::random(50);
             $rating = rand(1,10);
             $cover = '';
-            $book = ['title' => $title, 'category_id' => $category_id, 'slug' => $slug, 'author' => $author,
+            $book = ['title' => $title, 'category_id' => $category_id, 'slug' => $slug, 'author_id' => $author,
                     'description' => $description, 'rating' => $rating, 'cover' => $cover
                 ];
             $newBook = Book::create($book);

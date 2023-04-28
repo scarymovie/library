@@ -48,7 +48,7 @@
                         </div>
 
                         <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{{ $book->title }}</h2>Рейтинг - {{ $book->rating }}
-                        <h3>Автор - {{ $book->author }}</h3>
+                        <h3>Автор - {{ $book->author->name }}</h3>
                         <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">{{ $book->category->title }}</p>
                         <img src="{{ asset('storage/' . $book->cover) }}" alt="">
                         <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">

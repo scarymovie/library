@@ -39,7 +39,7 @@
                                         {{ $book->category->title }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ $book->author }}
+                                        {{ $book->author->name }}
                                     </td>
                                     <td>
                                         <div class="mt-4">
