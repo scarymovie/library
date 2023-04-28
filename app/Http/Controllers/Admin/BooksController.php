@@ -25,15 +25,27 @@ class BooksController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('admin.books.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BooksRequest $booksRequest, BookService $bookService)
     {
-        //
+        $validated = $booksRequest->validated();
+        $cover = $bookService->uploadImage($booksRequest);
+        $book = Book::create([
+            'title' => $validated['title'],
+            'category_id' => $validated['category_id'],
+            'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
+            'author' => $validated['author'],
+            'description' => $validated['description'],
+            'rating' => $validated['rating'],
+            'cover' => $cover ?? '',
+        ]);
+        return redirect()->route('books.edit', compact('book'));
     }
 
     /**
