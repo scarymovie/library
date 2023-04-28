@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UsersRequest;
+use App\Mail\NewAdmin;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -36,6 +37,8 @@ class UsersController extends Controller
         if ($validated['role'] === 'admin'){
             $user->syncRoles([]);
             $user->assignRole('admin');
+            Mail::to('foo@bar.ru')
+                ->send(new NewAdmin($user));
         }
         return redirect()->back();
     }
