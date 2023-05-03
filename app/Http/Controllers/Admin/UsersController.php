@@ -34,11 +34,15 @@ class UsersController extends Controller
     public function update(UsersRequest $usersRequest, User $user)
     {
         $validated = $usersRequest->validated();
-        if ($validated['role'] === 'admin'){
-            $user->syncRoles([]);
-            $user->assignRole('admin');
-            Mail::to('foo@bar.ru')
-                ->send(new NewAdmin($user));
+        try {
+            if ($validated['role'] === 'admin') {
+                $user->syncRoles([]);
+                $user->assignRole('admin');
+                Mail::to('foo@bar.ru')
+                    ->send(new NewAdmin($user));
+            }
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка']);
         }
         return redirect()->back();
     }
@@ -48,7 +52,11 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        try {
+            $user->delete();
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка']);
+        }
         return redirect()->back();
     }
 }

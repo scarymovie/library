@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommentsRequest;
 use App\Models\Book;
 use App\Models\Comment;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
@@ -17,11 +15,15 @@ class CommentsController extends Controller
     public function store(CommentsRequest $commentsRequest, Book $book)
     {
         $validated = $commentsRequest->validated();
-        $comment = Comment::create([
-            'user_id' => \Auth::id(),
-            'book_id' => $book->id,
-            'content' => $validated['content']
-        ]);
+        try {
+            $comment = Comment::create([
+                'user_id' => \Auth::id(),
+                'book_id' => $book->id,
+                'content' => $validated['content']
+            ]);
+        } catch (\Exception  $exception){
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при создании комментария']);
+        }
 
         return redirect()->back();
     }

@@ -32,19 +32,15 @@ class CategoriesController extends Controller
     public function store(CategoriesRequest $categoriesRequest)
     {
         $validated = $categoriesRequest->validated();
-        $category = Category::create([
-            'title' => $validated['title'],
-            'slug' => $validated['slug'] ?? \Str::slug($validated['title'])
-        ]);
+        try {
+            $category = Category::create([
+                'title' => $validated['title'],
+                'slug' => $validated['slug'] ?? \Str::slug($validated['title'])
+            ]);
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при сохранении']);
+        }
         return redirect()->route('categories.edit', compact('category'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
     }
 
     /**
@@ -61,10 +57,14 @@ class CategoriesController extends Controller
     public function update(CategoriesRequest $categoriesRequest, Category $category)
     {
         $validated = $categoriesRequest->validated();
-        $category = $category->update([
-            'title' => $validated['title'],
-            'slug' => $validated['slug'] ?? \Str::slug($validated['title'])
-        ]);
+        try {
+            $category = $category->update([
+                'title' => $validated['title'],
+                'slug' => $validated['slug'] ?? \Str::slug($validated['title'])
+            ]);
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при обновлении']);
+        }
         return redirect()->back();
     }
 
@@ -73,7 +73,11 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        try {
+            $category->delete();
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при удалении']);
+        }
         return redirect()->back();
     }
 }

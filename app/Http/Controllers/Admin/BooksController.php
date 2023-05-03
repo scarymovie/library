@@ -38,15 +38,19 @@ class BooksController extends Controller
     {
         $validated = $booksRequest->validated();
         $cover = $bookService->uploadImage($booksRequest);
-        $book = Book::create([
-            'title' => $validated['title'],
-            'category_id' => $validated['category_id'],
-            'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
-            'author_id' => $validated['author_id'],
-            'description' => $validated['description'],
-            'rating' => $validated['rating'],
-            'cover' => $cover ?? '',
-        ]);
+        try {
+            $book = Book::create([
+                'title' => $validated['title'],
+                'category_id' => $validated['category_id'],
+                'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
+                'author_id' => $validated['author_id'],
+                'description' => $validated['description'],
+                'rating' => $validated['rating'],
+                'cover' => $cover ?? '',
+            ]);
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при создании книги']);
+        }
         return redirect()->route('books.edit', compact('book'));
     }
 
@@ -67,15 +71,19 @@ class BooksController extends Controller
     {
         $validated = $booksRequest->validated();
         $cover = $bookService->uploadImage($booksRequest);
-        $book->update([
-            'title' => $validated['title'],
-            'category_id' => $validated['category_id'],
-            'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
-            'author_id' => $validated['author_id'],
-            'description' => $validated['description'],
-            'rating' => $validated['rating'],
-            'cover' => $cover ?? $book->cover,
-        ]);
+        try {
+            $book->update([
+                'title' => $validated['title'],
+                'category_id' => $validated['category_id'],
+                'slug' => $validated['slug'] ?? \Str::slug($validated['title']),
+                'author_id' => $validated['author_id'],
+                'description' => $validated['description'],
+                'rating' => $validated['rating'],
+                'cover' => $cover ?? $book->cover,
+            ]);
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при обновлении данных']);
+        }
         return redirect()->route('books.edit', compact('book'));
     }
 
@@ -84,7 +92,11 @@ class BooksController extends Controller
      */
     public function destroy(Book $book)
     {
-        $book->delete();
+        try {
+            $book->delete();
+        } catch (\Exception  $exception) {
+            return redirect()->back()->withErrors(['error' => 'Произошла ошибка при удалении']);
+        }
         return redirect()->route('books.index');
     }
 }
